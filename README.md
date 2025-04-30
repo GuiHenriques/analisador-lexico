@@ -35,7 +35,7 @@ python3 parte-a/main.py parte-a/test-files/invalida.txt
 ### Estrutura dos arquivos
 
 - `parte-b/lexer_ply.py` → Implementação do analisador léxico usando a biblioteca PLY.
-- `parte-b/main_ply.py` → Arquivo principal para execução do analisador com PLY.
+- `parte-b/main.py` → Arquivo principal para execução do analisador com PLY.
 - `parte-b/test-files/valida.lsi` → Exemplo de entrada válida conforme a linguagem LSI-2025-1.
 - `parte-b/test-files/invalida.lsi` → Exemplo de entrada com erro léxico.
 
