@@ -113,6 +113,11 @@ class Lexer:
         if current_state not in relop_dfa.accept_states:
             raise Exception(f"Operador relacional inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
 
+        # Verifica se logo após o lexema reconhecido há outro símbolo relacional
+        next_char = self.peek()
+        if next_char in relop_dfa.alphabet:
+            raise Exception(f"Sequência inválida de operadores relacionais iniciando em '{lexeme + next_char}' na linha {self.line}, coluna {start_column}")
+
         # Mapeia estado final para o tipo de operador relacional
         if current_state == "q1":
             token_type = RelationalOperator.LT      # <
