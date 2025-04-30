@@ -10,20 +10,30 @@ class DFA:
         self.accept_states = accept_states
 
 # DFA para operadores relacionais (>, <, =, >=, <=, !=)
-relop_states = {"q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"}
+relop_states = {"q0", "q1", "q2", "q3", "q4", "q5", "q6"}
 relop_alphabet = {">", "<", "=", "!"}
 relop_transitions = {
-    ("q0", "<"): "q1",
-    ("q0", ">"): "q6",
-    ("q0", "="): "q5",
-    ("q0", "!"): "q9",
-    ("q1", "="): "q2",
+    ("q0", "<"): "q1",     # pode ser < ou <=
+    ("q0", ">"): "q2",     # pode ser > ou >=
+    ("q0", "="): "q3",     # pode ser ==
+    ("q0", "!"): "q4",     # pode ser !=
+    
     # ("q1", ">"): "q3",  # '<>' nao e utilizado como operador na nossa linguagem
-    ("q6", "="): "q7",
-    ("q9", "="): "q3",
+    ("q1", "="): "q5",   # <=
+    ("q2", "="): "q6",   # >=
+    ("q3", "="): "q7",   # ==
+    ("q4", "="): "q8",   # !=
 }
 relop_start = "q0"
-relop_accept = {"q2", "q3", "q4", "q5", "q7", "q8"}
+relop_accept = {
+    "q1",  # '<'
+    "q2",  # '>'
+    "q5",  # '<='
+    "q6",  # '>='
+    "q7",  # '=='
+    "q8",  # '!='
+}
+
 
 # DFA para identificadores (letra seguida de letras ou digitos)
 id_states = {"q0", "q1"}

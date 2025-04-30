@@ -98,42 +98,35 @@ class Lexer:
         return Token(TokenType.INTEGER, value=int(lexeme), line=self.line, column=start_column)
 
     def lex_operator(self):
-        """Reconhece um operador relacional (inclusive operadores de dois caracteres)."""
+        """Reconhece um operador relacional válido da linguagem: <, <=, >, >=, ==, !="""
         start_column = self.column
         lexeme = ''
         current_state = relop_dfa.start_state
-        # Percorre DFA de operadores relacionais
+
         while True:
             c = self.peek()
-            # Encerra se fim de entrada ou proximo simbolo nao tiver transicao valida
             if c is None or (current_state, c) not in relop_dfa.transition_function:
                 break
             lexeme += self.next()
             current_state = relop_dfa.transition_function[(current_state, c)]
-        # Se parou em estado nao-final, e um operador invalido/incompleto
+
         if current_state not in relop_dfa.accept_states:
-            raise Exception(f"Operador relacional invalido '{lexeme}' na linha {self.line}, coluna {start_column}")
-        # Ajusta estados intermediarios para seus correspondentes finais (caso de < ou > nao seguidos de '=')
-        if current_state == "q1":
-            current_state = "q4"   # < sozinho
-        elif current_state == "q6":
-            current_state = "q8"   # > sozinho
-        final_state = current_state
+            raise Exception(f"Operador relacional inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
+
         # Mapeia estado final para o tipo de operador relacional
-        if final_state == "q2":
-            token_type = RelationalOperator.LE    # <=
-        elif final_state == "q3":
-            token_type = RelationalOperator.NE    # !=
-        elif final_state == "q4":
-            token_type = RelationalOperator.LT    # <
-        elif final_state == "q5":
-            token_type = RelationalOperator.EQ    # =
-        elif final_state == "q7":
-            token_type = RelationalOperator.GE    # >=
-        elif final_state == "q8":
-            token_type = RelationalOperator.GT    # >
+        if current_state == "q1":
+            token_type = RelationalOperator.LT      # <
+        elif current_state == "q2":
+            token_type = RelationalOperator.GT      # >
+        elif current_state == "q5":
+            token_type = RelationalOperator.LE      # <=
+        elif current_state == "q6":
+            token_type = RelationalOperator.GE      # >=
+        elif current_state == "q7":
+            token_type = RelationalOperator.EQ      # ==
+        elif current_state == "q8":
+            token_type = RelationalOperator.NE      # !=
         else:
-            # (Nao era para acontecer devido ao check de accept_states acima)
-            raise Exception(f"Operador relacional invalido '{lexeme}' na linha {self.line}, coluna {start_column}")
-        # Retorna token do tipo de operador relacional identificado
+            raise Exception(f"Estado final inesperado '{current_state}' para o lexema '{lexeme}'")
+
         return Token(token_type, line=self.line, column=start_column)
