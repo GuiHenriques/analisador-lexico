@@ -56,11 +56,11 @@ pip install ply
 Em seguida, execute:
 
 ```bash
-python3 parte-b/main_ply.py parte-b/test-files/valida.lsi
+python3 parte-b/main.py parte-b/test-files/valida.lsi
 ```
 
 Para testar com erro léxico:
 
 ```bash
-python3 parte-b/main_ply.py parte-b/test-files/invalida.lsi
+python3 parte-b/main.py parte-b/test-files/invalida.lsi
 ```
