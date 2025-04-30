@@ -1,0 +1,13 @@
+def main() {
+    int x, y;
+    x = 5;
+    y = 10;
+    if(x < y) {
+        x = x + y;
+    } else {
+        y = y * x;
+    }
+    x = y / 2;
+    print y - x;
+    return y;
+}

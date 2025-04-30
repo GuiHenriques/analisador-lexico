@@ -1,0 +1,12 @@
+def main() {
+    int a, b;
+    a = 1;
+    b = 2;
+    if(a ! b) {
+        a = a + b;
+    } else {
+        b = b * a;
+    }
+    @print a;
+    return b;
+}
