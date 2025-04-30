@@ -16,8 +16,6 @@ Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
 - `parte-a/test-files/valida.txt` → Exemplo de entrada correta (sem erros léxicos).
 - `parte-a/test-files/invalida.txt` → Exemplo de entrada com erro léxico.
 
----
-
 ### Como executar
 
 No terminal Linux:
@@ -32,8 +30,6 @@ Para testar com erro léxico:
 python3 parte-a/main.py parte-a/test-files/invalida.txt
 ```
 
----
-
 ## Parte B – Analisador Léxico com PLY
 
 ### Estrutura dos arquivos
@@ -42,8 +38,6 @@ python3 parte-a/main.py parte-a/test-files/invalida.txt
 - `parte-b/main_ply.py` → Arquivo principal para execução do analisador com PLY.
 - `parte-b/test-files/valida.lsi` → Exemplo de entrada válida conforme a linguagem LSI-2025-1.
 - `parte-b/test-files/invalida.lsi` → Exemplo de entrada com erro léxico.
-
----
 
 ### Como executar
 
