@@ -6,7 +6,7 @@ from lexer_ply import Lexer
 
 def main():
     if len(sys.argv) != 2:
-        print("Uso: python main_ply.py <caminho_do_arquivo_de_entrada>")
+        print("Uso: python3 main.py <arquivo_de_entrada>")
         sys.exit(1)
     caminho_arquivo = sys.argv[1]
     try:
