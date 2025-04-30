@@ -1,6 +1,6 @@
 from tokens import RelationalOperator, Token, TokenType
 from table import SymbolTable
-from dfa import relop_dfa
+from dfa import relop_dfa, num_dfa, id_dfa
 
 class Lexer:
     def __init__(self, file_path):
@@ -49,26 +49,57 @@ class Lexer:
             elif c in ['>', '<', '=', '!']:
                 tokens.append(self.lex_operator())
             else:
-                raise Exception(f"Erro: caractere inesperado '{c}' na linha {self.line}, coluna {self.column}")
+                tokens.append(self.lex_other())
 
         return tokens
 
     def lex_identifier(self):
         start_column = self.column
         lexeme = ''
+        current_state = "q9"
 
-        while (c := self.peek()) is not None and (c.isalnum()):
-            lexeme += c
-            self.next()
+        while True:
+            c = self.peek()
+            if c is None:
+                break
 
+            # Testar se o símbolo é válido no DFA
+            if (current_state, c) not in id_dfa.transition_function:
+                break
+
+            next_lexeme = self.next()
+            lexeme += "" if next_lexeme == None else next_lexeme
+            current_state = id_dfa.transition_function[(current_state, c)]
+
+        # Quando sai, checar se está num estado de aceitação
+        if current_state not in id_dfa.accept_states:
+            raise Exception(f"Erro: identificador inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
+
+        # Checa se é palavra-chave
         if self.symbol_table.get(lexeme) is None:
             self.symbol_table.insert(lexeme, TokenType.ID)
 
         return Token(TokenType.ID, line=self.line, column=start_column)
 
     def lex_number(self):
-        ...
-        # TODO:
+        start_column = self.column
+        lexeme = ''
+        current_state = "q12"
+
+        while True:
+            c = self.peek()
+            if c is None or (current_state, c) not in num_dfa.transition_function:
+                break
+
+            next_lexeme = self.next()
+            lexeme += "" if next_lexeme == None else next_lexeme
+            current_state = num_dfa.transition_function[(current_state, c)]
+
+        if current_state not in num_dfa.accept_states:
+            raise Exception(f"Erro: número inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
+
+        return Token(TokenType.INTEGER, value=int(lexeme), line=self.line, column=start_column)
+
 
     def lex_operator(self):
         start_column = self.column
@@ -103,3 +134,8 @@ class Lexer:
 
         return Token(token_type, line=self.line, column=start_column)
 
+    def lex_other(self):
+        start_column = self.column
+        c = self.next()
+
+        return Token(TokenType.UNK, value=c, line=self.line, column=start_column)

@@ -5,6 +5,7 @@ class TokenType(Enum):
     ID = 1
     INTEGER = 2
     OPERATOR = 3
+    UNK = 4
 
 class RelationalOperator(Enum):
     GT = 1 # greater than >

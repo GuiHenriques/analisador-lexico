@@ -66,3 +66,19 @@ id_dfa = DFA(
     start_state="q9",
     accept_states={"q10"}
 )
+
+# num_dfa
+digits = "0123456789"
+
+transition_function = {}
+for d in digits:
+    transition_function[("q12", d)] = "q13"
+    transition_function[("q13", d)] = "q13"
+
+num_dfa = DFA(
+    states={"q12", "q13"},
+    alphabet=set(digits),
+    transition_function=transition_function,
+    start_state="q12",
+    accept_states={"q13"}
+)
