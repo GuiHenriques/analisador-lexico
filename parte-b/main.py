@@ -10,14 +10,14 @@ def main():
         sys.exit(1)
     caminho_arquivo = sys.argv[1]
     try:
-        # Lê o conteúdo do arquivo de entrada
+        # Le o conteudo do arquivo de entrada
         with open(caminho_arquivo, 'r') as f:
             codigo = f.read()
     except FileNotFoundError:
         print(f"Erro: arquivo '{caminho_arquivo}' não encontrado.")
         sys.exit(1)
 
-    # Inicializa o analisador léxico e processa o código
+    # Inicializa o analisador lexico e processa o codigo
     lexer = Lexer()
     tokens, errors = lexer.tokenize(codigo)
 
@@ -28,7 +28,7 @@ def main():
             print(tok)
     else:
         print("Nenhum token reconhecido.")
-    # Imprime as mensagens de erro léxico, se houver
+    # Imprime as mensagens de erro lexico, se houver
     if errors:
         print("\nErros léxicos encontrados:")
         for msg in errors:

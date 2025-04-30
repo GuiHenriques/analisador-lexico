@@ -21,5 +21,5 @@ class SymbolTable:
         return self.symbols.get(lexeme, None)
 
     def __repr__(self):
-        # Exibe cada entrada "lexema -> tipo" em linhas separadas
+        # Exibe cada entrada
         return "\n".join(f"{lex} -> {typ}" for lex, typ in self.symbols.items())

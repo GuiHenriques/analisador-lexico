@@ -18,8 +18,8 @@ def main():
         print("\nTabela de Símbolos:")
         print(lexer.symbol_table)
     except Exception as e:
-        # Exibe mensagem de erro léxico com localização
-        print(f"Erro léxico: {e}")
+        # Exibe mensagem de erro lexico com localizacao
+        print(f"Erro lexico: {e}")
 
 if __name__ == "__main__":
     main()

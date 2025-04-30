@@ -14,32 +14,32 @@ class Lexer:
         'print': 'PRINT'
     }
 
-    # Lista de nomes de tokens (inclui palavras-chave e símbolos)
+    # Lista de nomes de tokens (inclui palavras-chave e simbolos)
     tokens = [
         # Palavras-chave
         'DEF', 'INT', 'IF', 'ELSE', 'RETURN', 'PRINT',
-        # Identificador e número
+        # Identificador e numero
         'ID', 'NUM',
-        # Operadores aritméticos
+        # Operadores aritmeticos
         'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN',
         # Operadores relacionais
         'EQ', 'NEQ', 'LT', 'LE', 'GT', 'GE',
-        # Separadores e pontuação
+        # Separadores e pontuacao
         'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'COMMA', 'SEMI'
     ]
 
-    # Expressões regulares para tokens simples (de um caractere ou sequência fixa)
+    # Expressoes regulares para tokens simples (de um caractere ou sequencia fixa)
     t_PLUS   = r'\+'
     t_MINUS  = r'-'
     t_TIMES  = r'\*'
     t_DIVIDE = r'/'
-    t_ASSIGN = r'='      # operador de atribuição
-    t_EQ     = r'=='     # igual (relacional)
-    t_NEQ    = r'!='     # diferente (relacional)
-    t_LT     = r'<'      # menor que
-    t_LE     = r'<='     # menor ou igual
-    t_GT     = r'>'      # maior que
-    t_GE     = r'>='     # maior ou igual
+    t_ASSIGN = r'='
+    t_EQ     = r'=='
+    t_NEQ    = r'!='
+    t_LT     = r'<'
+    t_LE     = r'<='
+    t_GT     = r'>'
+    t_GE     = r'>='
     t_LPAREN = r'\('
     t_RPAREN = r'\)'
     t_LBRACE = r'\{'
@@ -47,7 +47,7 @@ class Lexer:
     t_COMMA  = r','
     t_SEMI   = r';'
 
-    # Ignorar espaços em branco e tabulações
+    # Ignorar espacos em branco e tabulacoes
     t_ignore  = ' \t'
 
     # Regra para reconhecer identificadores e palavras-chave
@@ -58,37 +58,37 @@ class Lexer:
             t.type = Lexer.reserved[t.value]   # redefine tipo do token para a palavra-chave
         return t
 
-    # Regra para reconhecer números inteiros
+    # Regra para reconhecer numeros inteiros
     def t_NUM(self, t):
         r'\d+'
-        t.value = int(t.value)   # converte lexema para valor numérico inteiro
+        t.value = int(t.value)   # converte lexema para valor numerico inteiro
         return t
 
-    # Regra para contar linhas e ajustar posição de coluna
+    # Regra para contar linhas e ajustar posicao de coluna
     def t_newline(self, t):
         r'\n+'
         t.lexer.lineno += len(t.value)
-        # Não retorna token para nova linha (apenas atualiza contagem de linha)
+        # nao retorna token para nova linha (apenas atualiza contagem de linha)
 
-    # Tratamento de erros léxicos: caractere ilegal
+    # Tratamento de erros lexicos: caractere ilegal
     def t_error(self, t):
-        # Calcula a coluna do erro usando posição atual do lexer
+        # Calcula a coluna do erro usando posicao atual do lexer
         line = t.lexer.lineno
-        # Posição inicial da linha atual = última ocorrência de '\n' antes de t.lexpos
+        # Posicao inicial da linha atual = ultima ocorrencia de '\n' antes de t.lexpos
         last_newline = self.data.rfind('\n', 0, t.lexpos)  
         if last_newline < 0:
             last_newline = -1
         col = (t.lexpos - last_newline)
-        # Armazena mensagem de erro com linha, coluna e caractere inválido
-        msg = f"Erro léxico na linha {line}, coluna {col}: símbolo inválido '{t.value[0]}'"
+        # Armazena mensagem de erro com linha, coluna e caractere invalido
+        msg = f"Erro lexico na linha {line}, coluna {col}: simbolo invalido '{t.value[0]}'"
         self.errors.append(msg)
-        t.lexer.skip(1)  # pula o caractere inválido e continua
+        t.lexer.skip(1)  # pula o caractere invalido e continua
 
     def __init__(self):
-        # Constrói o lexer a partir das regras e armazena referência
+        # Constroi o lexer a partir das regras e armazena referencia
         self.lexer = lex.lex(module=self)
-        self.data = ""      # conteúdo do código fonte será armazenado aqui
-        self.errors = []    # lista de mensagens de erro léxico
+        self.data = ""      # conteudo do codigo fonte sera armazenado aqui
+        self.errors = []    # lista de mensagens de erro lexico
 
     def tokenize(self, text):
         """Tokeniza o texto de entrada e retorna lista de tokens e lista de erros."""
@@ -97,22 +97,22 @@ class Lexer:
         self.errors = []           # limpa erros anteriores
         self.lexer.input(text)     # fornece o texto de entrada ao lexer
 
-        tokens_list = []           # lista de tokens reconhecidos (como strings formatadas)
+        tokens_list = []           # lista de tokens reconhecidos
         while True:
             tok = self.lexer.token()
             if not tok:
                 break  # fim da entrada
-            # Formata o token para saída: TIPO: valor (ou apenas TIPO, se token for palavra-chave)
+            # Formata o token para saida: TIPO: valor (ou apenas TIPO, se token for palavra-chave)
             token_type = tok.type
             token_val  = tok.value
             if token_type in ['DEF','INT','IF','ELSE','RETURN','PRINT']:
-                # Tokens de palavra-chave: redundância entre tipo e lexema, imprime somente tipo
+                # Tokens de palavra-chave: redundancia entre tipo e lexema, imprime somente tipo
                 tokens_list.append(f"{token_type}: {token_val}")
             elif token_type == 'ID':
                 tokens_list.append(f"ID: {token_val}")
             elif token_type == 'NUM':
                 tokens_list.append(f"NUM: {token_val}")
             else:
-                # Demais tokens (operadores e separadores): mostra tipo e símbolo
+                # Demais tokens (operadores e separadores): mostra tipo e simbolo
                 tokens_list.append(f"{token_type}: {token_val}")
         return tokens_list, self.errors

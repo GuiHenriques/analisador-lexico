@@ -3,7 +3,7 @@
 
 from enum import Enum
 
-# Tipos de tokens suportados pelo analisador léxico
+# Tipos de tokens suportados pelo analisador lexico
 class TokenType(Enum):
     ID = 1
     INTEGER = 2
