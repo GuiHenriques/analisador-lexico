@@ -1,9 +1,0 @@
-def principal(int X, int Y) {
-    int soma123;
-    X = 10;
-    Y = 20;
-    soma123 = X + Y;
-    @erro = #X;
-    return soma123;
-}
-

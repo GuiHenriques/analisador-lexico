@@ -1,12 +1,6 @@
-"""
-Analisador Léxico para a linguagem LSI-2025-1 utilizando PLY.
-Integrantes: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
-Descrição:
-    - Reconhece palavras-chave, identificadores, números inteiros, operadores 
-      aritméticos/relacionais e separadores conforme a gramática da linguagem.
-    - Imprime a lista de tokens na ordem de aparecimento.
-    - Assinala erros léxicos indicando linha e coluna.
-"""
+# Trabalho de Compiladores - Parte B
+# Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
+
 import ply.lex as lex
 
 class Lexer:

@@ -1,3 +1,6 @@
+# Trabalho de Compiladores - Parte B
+# Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
+
 import sys
 from lexer_ply import Lexer
 
