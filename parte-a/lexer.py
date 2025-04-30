@@ -80,25 +80,35 @@ class Lexer:
         return Token(TokenType.ID, value=lexeme, line=self.line, column=start_column)
 
     def lex_number(self):
-        #Reconhece um numero inteiro a partir da posicao atual
+        # Reconhece um número inteiro a partir da posição atual
         start_column = self.column
         lexeme = ''
         current_state = num_dfa.start_state
-        # Percorre DFA de numeros enquanto caracteres forem digitos
+
         while True:
             c = self.peek()
             if c is None or (current_state, c) not in num_dfa.transition_function:
                 break
             lexeme += self.next()
             current_state = num_dfa.transition_function[(current_state, c)]
+
         # Verifica estado final
         if current_state not in num_dfa.accept_states:
             raise Exception(f"Número inteiro malformado '{lexeme}' na linha {self.line}, coluna {start_column}")
-        # Cria token INTEGER com valor inteiro
+
+        # Verifica se o próximo caractere é uma letra (indicando erro como '12abc')
+        next_char = self.peek()
+        if next_char is not None and next_char.isalpha():
+            # Consome os próximos caracteres para mostrar o lexema inteiro no erro
+            while self.peek() is not None and self.peek().isalnum():
+                lexeme += self.next()
+            raise Exception(f"Token inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
+
         return Token(TokenType.INTEGER, value=int(lexeme), line=self.line, column=start_column)
 
+
     def lex_operator(self):
-        """Reconhece um operador relacional válido da linguagem: <, <=, >, >=, ==, !="""
+        """Reconhece operadores relacionais válidos: <, <=, >, >=, =, <>"""
         start_column = self.column
         lexeme = ''
         current_state = relop_dfa.start_state
@@ -113,24 +123,24 @@ class Lexer:
         if current_state not in relop_dfa.accept_states:
             raise Exception(f"Operador relacional inválido '{lexeme}' na linha {self.line}, coluna {start_column}")
 
-        # Verifica se logo após o lexema reconhecido há outro símbolo relacional
+        # Verifica se após o lexema relacional, vem outro símbolo relacional
         next_char = self.peek()
         if next_char in relop_dfa.alphabet:
-            raise Exception(f"Sequência inválida de operadores relacionais iniciando em '{lexeme + next_char}' na linha {self.line}, coluna {start_column}")
+            raise Exception(f"Sequência inválida de operadores relacionais: '{lexeme + next_char}' na linha {self.line}, coluna {start_column}")
 
         # Mapeia estado final para o tipo de operador relacional
         if current_state == "q1":
             token_type = RelationalOperator.LT      # <
         elif current_state == "q2":
             token_type = RelationalOperator.GT      # >
-        elif current_state == "q5":
+        elif current_state == "q3":
+            token_type = RelationalOperator.EQ      # =
+        elif current_state == "q4":
             token_type = RelationalOperator.LE      # <=
+        elif current_state == "q5":
+            token_type = RelationalOperator.NE      # <>
         elif current_state == "q6":
             token_type = RelationalOperator.GE      # >=
-        elif current_state == "q7":
-            token_type = RelationalOperator.EQ      # ==
-        elif current_state == "q8":
-            token_type = RelationalOperator.NE      # !=
         else:
             raise Exception(f"Estado final inesperado '{current_state}' para o lexema '{lexeme}'")
 

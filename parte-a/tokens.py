@@ -10,12 +10,12 @@ class TokenType(Enum):
     OPERATOR = 3
 
 class RelationalOperator(Enum):
-    GT = 1   # >
-    GE = 2   # >=
-    LT = 3   # <
-    LE = 4   # <=
-    EQ = 5   # =  (igualdade)
-    NE = 6   # !=
+    LT = "<"
+    LE = "<="
+    GT = ">"
+    GE = ">="
+    EQ = "="
+    NE = "<>"
 
 class Token:
     def __init__(self, token_type, value=None, line=0, column=0):
