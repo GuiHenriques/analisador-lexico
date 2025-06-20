@@ -115,4 +115,5 @@ class Lexer:
             else:
                 # Demais tokens (operadores e separadores): mostra tipo e simbolo
                 tokens_list.append(f"{token_type}: {token_val}")
+        
         return tokens_list, self.errors
