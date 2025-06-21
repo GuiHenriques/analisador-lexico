@@ -90,7 +90,7 @@ class Lexer:
         self.data = ""      # conteudo do codigo fonte sera armazenado aqui
         self.errors = []    # lista de mensagens de erro lexico
 
-    def tokenize(self, text):
+    def print_tokens(self, text):
         """Tokeniza o texto de entrada e retorna lista de tokens e lista de erros."""
         self.data = text
         self.lexer.lineno = 1      # reinicia contagem de linhas
