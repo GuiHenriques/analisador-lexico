@@ -1,0 +1,19 @@
+def main() {
+    int x, y;
+    x = 10;
+    y = 5;
+
+    x = (x + ) * y; // erro aqui
+
+    print x;
+    print y;
+
+    {
+        int z;
+        z = x + y;
+        print z;
+    }
+
+    return;
+}
+

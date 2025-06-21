@@ -1,0 +1,51 @@
+def soma(int a, int b) {
+    int resultado;
+    resultado = a + b;
+    return resultado;
+}
+
+def imprimeResultado(int valor) {
+    print valor;
+}
+
+def main() {
+    int x, y, z, i, j;
+    x = 5;
+    y = 10;
+    z = soma(x, y);
+    imprimeResultado(z);
+
+    if (z > 10) {
+        print z;
+    } else {
+        print x;
+    }
+
+    i = 0;
+    j = 0;
+
+    i = i + 1;
+    j = j + i;
+
+    print i;
+    print j;
+
+    {
+        int temp;
+        temp = x + y;
+        print temp;
+    }
+
+    print x;
+    print y;
+    print z;
+    print i;
+    print j;
+	print a;
+	print b;
+	print c;
+	print d;
+
+    return;
+}
+

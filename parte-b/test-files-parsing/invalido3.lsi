@@ -1,0 +1,16 @@
+def main() {
+    int a b; // erro aqui (faltou vírgula)
+
+    a = 2;
+    b = 3;
+
+    print a;
+    print b;
+
+    if (a < b) {
+        print b;
+    }
+
+    return;
+}
+

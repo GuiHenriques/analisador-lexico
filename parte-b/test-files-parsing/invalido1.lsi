@@ -1,0 +1,16 @@
+def main() {
+    int a, b;
+    a = 3;
+    b = 5;
+
+    if (a < b) { // bloco do if não fechado.
+        print a;
+    else {
+        print b;
+    }
+
+    print a;
+    print b;
+    return;
+}
+
