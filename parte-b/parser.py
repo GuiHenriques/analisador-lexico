@@ -1,6 +1,10 @@
 class Parser:
     def __init__(self):
-        self.parsing_table = self._build_parsing_table()
+        self.stack = []
+        self.tokens = []
+        self.current_token_index = 0
+        self.errors = []
+        self.table = self._build_parsing_table()
 
     def _build_parsing_table(self):
         return {
@@ -156,53 +160,63 @@ class Parser:
             ('FACTOR', 'ID'): ['ID'],
         }
 
-
     def parse(self, tokens):
-        stack = ['$', 'MAIN']
-        tokens.append('$')
-        index = 0
+        self.tokens = tokens
+        self.current_token_index = 0
+        self.stack = ['$', 'MAIN']  # símbolo inicial
+        self.errors = []
 
-        print(f"{'Stack':<40} {'Input':<40} Action")
-        print('-'*100)
+        # print(f"Analisando terminal: {top}")
+        # print(f"Token atual: {current_token.value if current_token else None}")
+        # print(f"Pilha: {self.stack}")
 
-        while stack:
-            top = stack.pop()
-            current_token = tokens[index]
+        while self.stack:
+            top = self.stack.pop()
+            current_token = self.peek()
 
-            print(f"{' '.join(stack[::-1]):<40} {' '.join(tokens[index:]):<40} ", end='')
-
-            if top == current_token == '$':
-                print("ACCEPT")
-                return True
-
-            elif top == current_token:
-                print(f"Match terminal '{current_token}'")
-                index += 1
-
-            elif top in self._terminals():
-                print(f"ERROR: expected '{top}', got '{current_token}'")
-                return False
-
-            else:
-                production = self.parsing_table.get((top, current_token))
-
-                if production is None:
-                    print(f"ERROR: no rule for ({top}, {current_token})")
-                    return False
-                elif production == []:
-                    print(f"Apply {top} ::= ε")
+            # Fim da análise com sucesso
+            if top == '$':
+                if current_token is None or current_token.type == '$':
+                    return True  # aceito
                 else:
-                    print(f"Apply {top} ::= {' '.join(production)}")
-                    for symbol in reversed(production):
-                        stack.append(symbol)
+                    self.errors.append("Erro: entrada restante após fim da pilha.")
+                    break
 
-        print("Parsing failed.")
-        return False
+            # Terminal: precisa bater com o tipo do token
+            elif self.is_terminal(top):
+                if current_token and top == current_token.type:
+                    self.advance()
+                else:
+                    encontrado = current_token.type if current_token else 'EOF'
+                    self.errors.append(f"Erro: esperado '{top}', encontrado '{encontrado}'")
+                    break
 
-    def _terminals(self):
-        return [
-            'def', 'int', '{', '}', '(', ')', ';', ',', ':=',
-            'id', 'num', 'print', 'return', 'if', 'else',
-            '+', '-', '*', '/',
-            '<', '<=', '>', '>=', '==', '<>'
-        ]
+            # Não-terminal: consulta a tabela LL(1)
+            else:
+                lookahead = current_token.type if current_token else '$'
+                rule = self.table.get((top, lookahead))
+
+                if rule is None:
+                    self.errors.append(
+                        f"Erro de sintaxe: nenhuma regra para {top} com lookahead '{lookahead}'"
+                    )
+                    break
+
+                # Aplica a produção (em ordem inversa, porque é pilha)
+                for symbol in reversed(rule):
+                    if symbol != '':
+                        self.stack.append(symbol)
+
+        return not self.errors
+
+    def peek(self):
+        if self.current_token_index < len(self.tokens):
+            return self.tokens[self.current_token_index]
+        return None
+
+    def advance(self):
+        self.current_token_index += 1
+
+    def is_terminal(self, symbol):
+        return symbol not in {nt for (nt, _) in self.table} and symbol != '$'
+

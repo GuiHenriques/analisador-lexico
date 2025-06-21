@@ -21,19 +21,22 @@ def main():
     # Inicializa o analisador lexico e processa o codigo
     lexer = Lexer()
     tokens, errors = lexer.tokenize(codigo)
+    for token in tokens:
+        print(f"{token.type}: {token.value}")
 
+    # Imprime as mensagens de erro lexico, se houver
     if errors:
-        print("\nErros léxicos encontrados:")
+        print("Erros léxicos encontrados:")
         for msg in errors:
             print(msg)
-        return
 
     parser = Parser()
     if parser.parse(tokens):
-        print("Deu boa!")
+        print("Análise sintática bem-sucedida!")
     else:
-        print("Deu ruim!")
-
+        print("Erros de análise sintática:")
+        for error in parser.errors:
+            print(error)
 
 if __name__ == "__main__":
     main()
