@@ -28,13 +28,11 @@ def main():
             print(msg)
         return
 
-    print(tokens)
-
-    # parser = Parser()
-    # if parser.parse(tokens):
-    #     print("Deu boa!")
-    # else:
-    #     print("Deu ruim!")
+    parser = Parser()
+    if parser.parse(tokens):
+        print("Deu boa!")
+    else:
+        print("Deu ruim!")
 
 
 if __name__ == "__main__":
