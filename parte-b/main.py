@@ -3,6 +3,7 @@
 
 import sys
 from lexer_ply import Lexer
+from parser import Parser
 
 def main():
     if len(sys.argv) != 2:
@@ -21,18 +22,20 @@ def main():
     lexer = Lexer()
     tokens, errors = lexer.tokenize(codigo)
 
-    # Imprime a lista de tokens reconhecidos
-    if tokens:
-        print("Tokens reconhecidos:")
-        for tok in tokens:
-            print(tok)
-    else:
-        print("Nenhum token reconhecido.")
-    # Imprime as mensagens de erro lexico, se houver
     if errors:
         print("\nErros léxicos encontrados:")
         for msg in errors:
             print(msg)
+        return
+
+    print(tokens)
+
+    # parser = Parser()
+    # if parser.parse(tokens):
+    #     print("Deu boa!")
+    # else:
+    #     print("Deu ruim!")
+
 
 if __name__ == "__main__":
     main()
