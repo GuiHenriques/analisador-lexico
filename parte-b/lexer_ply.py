@@ -115,21 +115,9 @@ class Lexer:
             else:
                 # Demais tokens (operadores e separadores): mostra tipo e simbolo
                 tokens_list.append(f"{token_type}: {token_val}")
+        return tokens_list, self.errors
 
-        # Imprime a lista de tokens reconhecidos
-        if tokens_list:
-            print("Tokens reconhecidos:")
-            for tok in tokens_list:
-                print(tok)
-        else:
-            print("Nenhum token reconhecido.")
-        # Imprime as mensagens de erro lexico, se houver
-        if self.errors:
-            print("\nErros léxicos encontrados:")
-            for msg in self.errors:
-                print(msg)
-
-    def tokenize(self, text) -> tuple[list[str], list[str]]:
+    def tokenize(self, text):
         """Tokeniza o texto de entrada e retorna lista de tokens e lista de erros."""
         self.data = text
         self.lexer.lineno = 1      # reinicia contagem de linhas
@@ -141,6 +129,17 @@ class Lexer:
             tok = self.lexer.token()
             if not tok:
                 break  # fim da entrada
+            # Formata o token para saida: TIPO: valor (ou apenas TIPO, se token for palavra-chave)
+            token_type = tok.type
             token_val  = tok.value
-            tokens_list.append(token_val)
+            if token_type in ['DEF','INT','IF','ELSE','RETURN','PRINT']:
+                # Tokens de palavra-chave: redundancia entre tipo e lexema, imprime somente tipo
+                tokens_list.append(f"{token_type}: {token_val}")
+            elif token_type == 'ID':
+                tokens_list.append(f"ID: {token_val}")
+            elif token_type == 'NUM':
+                tokens_list.append(f"NUM: {token_val}")
+            else:
+                # Demais tokens (operadores e separadores): mostra tipo e simbolo
+                tokens_list.append(f"{token_type}: {token_val}")
         return tokens_list, self.errors
