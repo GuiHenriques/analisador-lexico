@@ -168,9 +168,9 @@ class Parser:
 
         # print(f"Analisando terminal: {top}")
         # print(f"Token atual: {current_token.value if current_token else None}")
-        # print(f"Pilha: {self.stack}")
 
         while self.stack:
+            print(f"Pilha: {self.stack}")
             top = self.stack.pop()
             current_token = self.peek()
 
