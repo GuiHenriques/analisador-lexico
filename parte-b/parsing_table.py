@@ -44,7 +44,7 @@ def build_parsing_table():
         ("STMT", "RETURN"): ["RETURNST", "SEMI"],
         ("STMT", "IF"): ["IFSTMT"],
         ("STMT", "LBRACE"): ["LBRACE", "STMTLIST", "RBRACE"],
-        ("STMT", "SEMI"): [],
+        ("STMT", "SEMI"): ["SEMI"],
         # ATRIBST
         ("ATRIBST", "ID"): ["ID", "ASSIGN", "EXPR"],
         # FCALL
@@ -141,5 +141,19 @@ def build_parsing_table():
         # FACTOR
         ("FACTOR", "NUM"): ["NUM"],
         ("FACTOR", "LPAREN"): ["LPAREN", "NUMEXPR", "RPAREN"],
-        ("FACTOR", "ID"): ["ID"],
+        ("FACTOR", "ID"): ["ID", "FACTORTAIL"],
+        # FACTORTAIL
+        ("FACTORTAIL", "LPAREN"): ["LPAREN", "PARLISTCALL", "RPAREN"],
+        ("FACTORTAIL", "RPAREN"): [],
+        ("FACTORTAIL", "TIMES"): [],
+        ("FACTORTAIL", "DIVIDE"): [],
+        ("FACTORTAIL", "PLUS"): [],
+        ("FACTORTAIL", "MINUS"): [],
+        ("FACTORTAIL", "SEMI"): [],
+        ("FACTORTAIL", "LT"): [],
+        ("FACTORTAIL", "LE"): [],
+        ("FACTORTAIL", "GT"): [],
+        ("FACTORTAIL", "GE"): [],
+        ("FACTORTAIL", "EQ"): [],
+        ("FACTORTAIL", "NEQ"): [],
     }
