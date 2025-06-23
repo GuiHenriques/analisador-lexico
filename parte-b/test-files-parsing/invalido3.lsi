@@ -1,5 +1,5 @@
 def main() {
-    int a b; // erro aqui (faltou vírgula)
+    int a b;
 
     a = 2;
     b = 3;

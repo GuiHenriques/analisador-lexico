@@ -3,7 +3,7 @@ def main() {
     x = 10;
     y = 5;
 
-    x = (x + ) * y; // erro aqui
+    x = (x + ) * y;
 
     print x;
     print y;
