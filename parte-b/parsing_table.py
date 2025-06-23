@@ -44,17 +44,17 @@ def build_parsing_table():
         ("STMT", "RETURN"): ["RETURNST", "SEMI"],
         ("STMT", "IF"): ["IFSTMT"],
         ("STMT", "LBRACE"): ["LBRACE", "STMTLIST", "RBRACE"],
-        ("STMT", "SEMI"): ["SEMI"],
+        ("STMT", "SEMI"): [],
         # ATRIBST
         ("ATRIBST", "ID"): ["ID", "ASSIGN", "EXPR"],
         # FCALL
         ("FCALL", "ID"): ["ID", "LPAREN", "PARLISTCALL", "RPAREN"],
         # PARLISTCALL
-        ("PARLISTCALL", "ID"): ["ID", "ARGTail"],
+        ("PARLISTCALL", "ID"): ["ID", "ARGTAIL"],
         ("PARLISTCALL", "RPAREN"): [],
-        # ARGTail
-        ("ARGTail", "COMMA"): ["COMMA", "ID", "ARGTail"],
-        ("ARGTail", "RPAREN"): [],
+        # ARGTAIL
+        ("ARGTAIL", "COMMA"): ["COMMA", "ID", "ARGTAIL"],
+        ("ARGTAIL", "RPAREN"): [],
         # PRINTST
         ("PRINTST", "PRINT"): ["PRINT", "EXPR"],
         # RETURNST
