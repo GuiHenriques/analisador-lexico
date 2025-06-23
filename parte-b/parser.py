@@ -166,11 +166,8 @@ class Parser:
         self.stack = ['$', 'MAIN']  # símbolo inicial
         self.errors = []
 
-        # print(f"Analisando terminal: {top}")
-        # print(f"Token atual: {current_token.value if current_token else None}")
-
         while self.stack:
-            print(f"Pilha: {self.stack}")
+            # print(f"Pilha: {self.stack}")
             top = self.stack.pop()
             current_token = self.peek()
 
@@ -179,7 +176,7 @@ class Parser:
                 if current_token is None or current_token.type == '$':
                     return True  # aceito
                 else:
-                    self.errors.append("Erro: entrada restante após fim da pilha.")
+                    self.errors.append(("trailing_input", current_token))
                     break
 
             # Terminal: precisa bater com o tipo do token
@@ -188,7 +185,7 @@ class Parser:
                     self.advance()
                 else:
                     encontrado = current_token.type if current_token else 'EOF'
-                    self.errors.append(f"Erro: esperado '{top}', encontrado '{encontrado}'")
+                    self.errors.append(("token_unexpected", top, current_token))
                     break
 
             # Não-terminal: consulta a tabela LL(1)
@@ -197,16 +194,16 @@ class Parser:
                 rule = self.table.get((top, lookahead))
 
                 if rule is None:
-                    self.errors.append(
-                        f"Erro de sintaxe: nenhuma regra para {top} com lookahead '{lookahead}'"
-                    )
+                    self.errors.append(("no_rule", top, lookahead))
                     break
 
                 # Aplica a produção (em ordem inversa, porque é pilha)
                 for symbol in reversed(rule):
                     if symbol != '':
                         self.stack.append(symbol)
-
+        
+        self.report_errors()
+        
         return not self.errors
 
     def peek(self):
@@ -220,3 +217,15 @@ class Parser:
     def is_terminal(self, symbol):
         return symbol not in {nt for (nt, _) in self.table} and symbol != '$'
 
+    def report_errors(self):
+        for tipo, *info in self.errors:
+            if tipo == "token_unexpected":
+                top, token = info
+                print(f"Erro: token inesperado '{token.type}', esperava '{top}'")
+            elif tipo == "no_rule":
+                top, lookahead = info
+                print(f"Erro: nenhuma regra para '{top}' com lookahead '{lookahead}'")
+            elif tipo == "trailing_input":
+                token = info[0]
+                print(f"Erro: tokens extras após análise — '{token.value}'")
+            self.errors.clear()
