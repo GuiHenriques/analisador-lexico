@@ -49,7 +49,7 @@ def testar_lista(casos, esperado_valido=True):
     passou = 0
     for i, codigo in enumerate(casos, 1):
         tokens, lex_errors = lexer.tokenize(codigo)
-        # sucesso = False
+        sucesso = False
 
         if not lex_errors:
             sucesso = parser.parse(tokens)

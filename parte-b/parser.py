@@ -14,7 +14,6 @@ class Parser:
         self.errors = []
 
         while self.stack:
-            # print(f"Pilha: {self.stack}")
             top = self.stack.pop()
             current_token = self.peek()
 
@@ -41,7 +40,7 @@ class Parser:
                 rule = self.table.get((top, lookahead))
 
                 if rule is None:
-                    self.errors.append(("no_rule", top, lookahead))
+                    self.errors.append(("no_rule", top, lookahead, f"Linha {current_token.lineno}"))
                     return False
 
                 # Aplica a produção (em ordem inversa, porque é pilha)

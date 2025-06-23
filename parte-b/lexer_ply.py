@@ -104,4 +104,4 @@ class Lexer:
             if not tok:
                 break
             tokens.append(tok)
-        return tokens, self.errors  
+        return tokens, self.errors

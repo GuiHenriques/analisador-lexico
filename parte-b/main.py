@@ -21,8 +21,6 @@ def main():
     # Inicializa o analisador lexico e processa o codigo
     lexer = Lexer()
     tokens, errors = lexer.tokenize(codigo)
-    for token in tokens:
-        print(f"{token.type}: {token.value}")
 
     # Imprime as mensagens de erro lexico, se houver
     if errors:
