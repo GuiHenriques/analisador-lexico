@@ -1,5 +1,6 @@
+int a;
+
 def main() {
-    int a, b;
     a = 3;
     b = 5;
 
