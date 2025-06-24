@@ -6,6 +6,7 @@ class Parser:
         self.current_token_index = 0
         self.errors = []
         self.table = build_parsing_table()
+        self.non_terminals = set(nt for nt, _ in self.table) # conjunto de não-terminais da parsing table
 
     def parse(self, tokens):
         self.tokens = tokens
@@ -29,7 +30,7 @@ class Parser:
             # terminal: precisa fazer match com o tipo do token
             elif self.is_terminal(top):
                 if current_token and top == current_token.type:
-                    self.advance() # consome o token
+                    self.advance() # avança para o próximo token
                 else:
                     # token inesperado recebido
                     self.errors.append(("token_unexpected", top, current_token))
@@ -47,7 +48,7 @@ class Parser:
 
                 # Aplica a produção
                 for symbol in reversed(rule): # em ordem inversa, porque é pilha em uma lista do python
-                    if symbol != '':
+                    if symbol != '': # ignora produções vazias
                         self.stack.append(symbol)
         
         self.report_errors()
@@ -63,7 +64,10 @@ class Parser:
         self.current_token_index += 1
 
     def is_terminal(self, symbol):
-        return symbol not in {nt for (nt, _) in self.table} and symbol != '$'
+        if symbol == '$':
+            return False
+
+        return symbol not in self.non_terminals
 
     def report_errors(self):
         for tipo, *info in self.errors:
