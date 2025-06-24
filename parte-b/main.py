@@ -27,10 +27,11 @@ def main():
         print("Erros léxicos encontrados:")
         for msg in errors:
             print(msg)
+        return
 
     parser = Parser()
     if parser.parse(tokens):
-        print("Análise sintática bem-sucedida!")
+        print("Análise léxica e sintática bem-sucedida!")
     else:
         print("Erros de análise sintática:")
         for error in parser.errors:

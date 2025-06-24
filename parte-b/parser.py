@@ -33,7 +33,7 @@ class Parser:
                     self.advance() # avança para o próximo token
                 else:
                     # token inesperado recebido
-                    self.errors.append(("token_unexpected", top, current_token))
+                    self.errors.append(("no_rule", top, f"Linha {current_token.lineno}"))
                     return False
 
             # non-terminal: consulta a tabela LL(1)
@@ -50,8 +50,6 @@ class Parser:
                 for symbol in reversed(rule): # em ordem inversa, porque é pilha em uma lista do python
                     if symbol != '': # ignora produções vazias
                         self.stack.append(symbol)
-        
-        self.report_errors()
 
         return not self.errors
 
@@ -68,16 +66,3 @@ class Parser:
             return False
 
         return symbol not in self.non_terminals
-
-    def report_errors(self):
-        for tipo, *info in self.errors:
-            if tipo == "token_unexpected":
-                top, token = info
-                print(f"Erro: token inesperado '{token.type}', esperava '{top}'")
-            elif tipo == "no_rule":
-                top, lookahead = info
-                print(f"Erro: nenhuma regra para '{top}' com lookahead '{lookahead}'")
-            elif tipo == "trailing_input":
-                token = info[0]
-                print(f"Erro: tokens extras após análise — '{token.value}'")
-            self.errors.clear()
