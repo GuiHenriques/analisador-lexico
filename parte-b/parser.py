@@ -1,3 +1,6 @@
+# Trabalho de Compiladores - Parte C
+# Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
+
 from parsing_table import build_parsing_table
 class Parser:
     def __init__(self):

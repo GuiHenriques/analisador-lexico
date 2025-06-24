@@ -1,3 +1,5 @@
+# Trabalho de Compiladores - Parte C
+# Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
 
 from lexer_ply import Lexer
 from parser import Parser

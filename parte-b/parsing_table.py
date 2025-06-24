@@ -1,3 +1,6 @@
+# Trabalho de Compiladores - Parte C
+# Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
+
 def build_parsing_table():
     return {
         # MAIN

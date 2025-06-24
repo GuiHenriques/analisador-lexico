@@ -1,4 +1,4 @@
-# Trabalho de Compiladores - Parte B
+# Trabalho de Compiladores
 # Grupo: Higor Abreu, Giovane Pimentel, Isabela Vill, Guilherme Henriques
 
 import sys
