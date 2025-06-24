@@ -56,8 +56,8 @@ class Parser:
         return not self.errors
 
     def peek(self):
-        if self.current_token_index < len(self.tokens):
-            return self.tokens[self.current_token_index]
+        if self.current_token_index < len(self.tokens): #verifica se o índice atual é válido (não ultrapassa o tamanho da lista de tokens)
+            return self.tokens[self.current_token_index] # pega o token atual da lista de tokens
         return None
 
     def advance(self):
