@@ -36,8 +36,21 @@ python3 parte-a/main.py parte-a/test-files/invalida.txt
 
 - `parte-b/lexer_ply.py` → Implementação do analisador léxico usando a biblioteca PLY.
 - `parte-b/main.py` → Arquivo principal para execução do analisador com PLY.
-- `parte-b/test-files/valida.lsi` → Exemplo de entrada válida conforme a linguagem LSI-2025-1.
-- `parte-b/test-files/invalida.lsi` → Exemplo de entrada com erro léxico.
+- `parte-b/test-files-lexing/valida.lsi` → Exemplo de entrada válida conforme a linguagem LSI-2025-1.
+- `parte-b/test-files-lexing/invalida.lsi` → Exemplo de entrada com erro léxico.
+
+## Parte C - Analisador Sintático com PLY
+
+Aqui está a implementação do analisador sintático, que utilizou a parte B como base.
+
+### Estrutura dos arquivos
+
+- `parte-b/parser.py` → Implementação do analisador léxico usando a biblioteca PLY.
+- `parte-b/parsing_table.py` → Definição da tabela de parsing para a gramática LSI-2025-1.
+- `parte-b/test-files-parsing/valida.lsi` → Exemplo de entrada válida conforme a linguagem LSI-2025-1.
+- `parte-b/test-files-parsing/invalida1.lsi` → Exemplo de entrada com erro sintático.
+- `parte-b/test-files-parsing/invalida2.lsi` → Exemplo de entrada com erro sintático.
+- `parte-b/test-files-parsing/invalida3.lsi` → Exemplo de entrada com erro sintático.
 
 ### Como executar
 
