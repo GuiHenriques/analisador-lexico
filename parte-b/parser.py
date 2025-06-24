@@ -14,37 +14,39 @@ class Parser:
         self.errors = []
 
         while self.stack:
-            top = self.stack.pop()
-            current_token = self.peek()
+            top = self.stack.pop() # consome o topo da pilha
+            current_token = self.peek() # obtém o token atual da lista de tokens, mas sem avançar
 
-            # Fim da análise com sucesso
+            # fim: quando acabar a analise, o topo da pilha tem que ser $
             if top == '$':
-                if current_token is None or current_token.type == '$':
+                if current_token is None: # lista de tokens vazia
                     return True  # aceito
                 else:
+                    # ainda tem tokens a serem lidos, mas o topo da pilha é $, é erro
                     self.errors.append(("trailing_input", current_token))
                     return False
 
-            # Terminal: precisa bater com o tipo do token
+            # terminal: precisa fazer match com o tipo do token
             elif self.is_terminal(top):
                 if current_token and top == current_token.type:
-                    self.advance()
+                    self.advance() # consome o token
                 else:
-                    encontrado = current_token.type if current_token else 'EOF'
+                    # token inesperado recebido
                     self.errors.append(("token_unexpected", top, current_token))
                     return False
 
-            # Não-terminal: consulta a tabela LL(1)
+            # non-terminal: consulta a tabela LL(1)
             else:
                 lookahead = current_token.type if current_token else '$'
                 rule = self.table.get((top, lookahead))
 
-                if rule is None:
+                if rule is None: # regra nao encontrada na parsing_table
+                    # não tem regra para o símbolo no topo da pilha com o lookahead atual
                     self.errors.append(("no_rule", top, lookahead, f"Linha {current_token.lineno}"))
                     return False
 
-                # Aplica a produção (em ordem inversa, porque é pilha)
-                for symbol in reversed(rule):
+                # Aplica a produção
+                for symbol in reversed(rule): # em ordem inversa, porque é pilha em uma lista do python
                     if symbol != '':
                         self.stack.append(symbol)
         
