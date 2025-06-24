@@ -33,7 +33,7 @@ class Parser:
                     self.advance() # avança para o próximo token
                 else:
                     # token inesperado recebido
-                    self.errors.append(("no_rule", top, f"Linha {current_token.lineno}"))
+                    self.errors.append(("token_unexpected", top, f"Linha {current_token.lineno}"))
                     return False
 
             # non-terminal: consulta a tabela LL(1)
